@@ -1,0 +1,177 @@
+version: "3.9"
+
+x-backend-env: &backend-env
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}
+  DATABASE_URL: postgresql+asyncpg://sca:${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}@db:5432/sca_scanner
+  SYNC_DATABASE_URL: postgresql://sca:${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}@db:5432/sca_scanner
+  # Left unset here on purpose — if truly empty, docker-entrypoint.sh generates
+  # one on first boot. Only the api service persists it (see its api_data
+  # volume below) — worker/beat never run the FastAPI lifespan or touch JWTs,
+  # so a stable key doesn't matter for them.
+  SECRET_KEY: ${SECRET_KEY:-}
+  REDIS_URL: redis://redis:6379/0
+  NVD_API_KEY: ${NVD_API_KEY:-}
+  NVD_MIRROR_ENABLED: ${NVD_MIRROR_ENABLED:-false}
+
+services:
+  # ── PostgreSQL ──────────────────────────────────────────────────
+  db:
+    image: postgres:18-alpine
+    container_name: sca_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sca_scanner
+      POSTGRES_USER: sca
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - pg_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sca -d sca_scanner"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Do NOT expose port 5432 in production — remove this block if only needed for local dev
+    # ports:
+    #   - "5432:5432"
+    networks:
+      sca_network:
+        aliases:
+          - db
+
+  # ── Redis (task queue) ──────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: sca_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      sca_network:
+        aliases:
+          - redis
+
+  # ── FastAPI backend ─────────────────────────────────────────────
+  api:
+    image: docker.io/mcmwhfysec/sbom-shield-backend:latest
+    container_name: sca_api
+    restart: unless-stopped
+    environment:
+      <<: *backend-env
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://localhost:9000}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      # Defaults to "admin" — the bootstrap account is always created with
+      # force_password_change=TRUE, so this only grants a one-time login.
+      # Change it (here or after first login) before exposing this instance.
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
+      APP_URL: ${APP_URL:-http://localhost:9000}
+      OLLAMA_URL: ${OLLAMA_URL:-http://ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - api_data:/app/data
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    networks:
+      sca_network:
+        aliases:
+          - api
+
+  # ── Celery worker (SBOM processing + OSV enrichment) ───────────
+  worker:
+    image: docker.io/mcmwhfysec/sbom-shield-backend:latest
+    container_name: sca_worker
+    restart: unless-stopped
+    environment:
+      <<: *backend-env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A app.worker.celery_app worker --loglevel=info --concurrency=4 --prefetch-multiplier=1 -Q scans
+    networks:
+      sca_network:
+        aliases:
+          - worker
+
+  # ── Celery beat (scheduled re-scans) ───────────────────────────
+  beat:
+    image: docker.io/mcmwhfysec/sbom-shield-backend:latest
+    container_name: sca_beat
+    restart: unless-stopped
+    environment:
+      <<: *backend-env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    # Keep beat's PersistentScheduler DB in a writable runtime path, not the
+    # working dir — a stale/corrupt schedule there that beat can't delete (e.g.
+    # under a bind mount with a uid mismatch) crash-loops the container.
+    command: celery -A app.worker.celery_app beat --loglevel=info --schedule=/tmp/celerybeat-schedule
+    networks:
+      sca_network:
+        aliases:
+          - beat
+
+  # ── Ollama (local LLM — AI Security Advisor) ───────────────────
+  # Self-hosted; no API key. Pull a model after start, e.g.:
+  #   docker compose exec ollama ollama pull llama3.2
+  ollama:
+    image: ollama/ollama:latest
+    container_name: sca_ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      sca_network:
+        aliases:
+          - ollama
+
+  # ── React frontend served by Nginx ─────────────────────────────
+  frontend:
+    image: docker.io/mcmwhfysec/sbom-shield-frontend:latest
+    container_name: sca_frontend
+    restart: unless-stopped
+    ports:
+      - "9000:8080"
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      sca_network:
+        aliases:
+          - frontend
+
+volumes:
+  pg_data:
+  redis_data:
+  ollama_data:
+  api_data:
+
+networks:
+  sca_network:
+    # driver: bridge
+    # dns_enabled enables aardvark-dns for container name resolution in Podman.
+    # Docker ignores this key and uses its own embedded DNS (127.0.0.11) instead.
+    # dns_enabled: true
+
+# SBOM-Shield — Docker Hub Edition
+# Images: docker.io/mcmwhfysec/sbom-shield-backend:latest
+#         docker.io/mcmwhfysec/sbom-shield-frontend:latest
+#
+# For local development use: docker compose -f docker-compose.dev.yml up --build
+# To push new images to Docker Hub: ./dev/scripts/build-and-push.sh

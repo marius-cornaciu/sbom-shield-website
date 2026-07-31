@@ -22,7 +22,7 @@
         <a href="#quickstart">Quick Start</a>
         <a href="#how-it-works">How It Works</a>
         <a href="#faq">FAQ</a>
-        <a class="btn btn-ghost" href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">Docker Hub</a>
+        <a class="btn btn-ghost" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">Docker Hub</a>
       </div>
     </nav>
   </header>
@@ -41,11 +41,11 @@
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#quickstart">Get Started</a>
-        <a class="btn btn-secondary" href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">View on Docker Hub</a>
+        <a class="btn btn-secondary" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">View on Docker Hub</a>
       </div>
       <div class="hero-terminal" aria-label="Example command">
         <div class="terminal-bar"><span></span><span></span><span></span></div>
-        <pre><code>$ curl -O https://raw.githubusercontent.com/marius-cornaciu/sca-scanner/main/docker-compose.yml
+        <pre><code>$ curl -O https://raw.githubusercontent.com/marius-cornaciu/sbom-shield-website/main/docker-compose.yml
 $ docker compose up -d
 → SBOM-Shield running at http://localhost:9000 (log in: admin / admin)</code></pre>
       </div>
@@ -145,13 +145,15 @@ $ docker compose up -d
       <ol class="steps">
         <li>
           <h3>1. Get the compose file</h3>
-          <pre><code>curl -O https://raw.githubusercontent.com/marius-cornaciu/sca-scanner/main/docker-compose.yml</code></pre>
+          <pre><code>curl -O https://raw.githubusercontent.com/marius-cornaciu/sbom-shield-website/main/docker-compose.yml</code></pre>
           <p>No <code>.env</code> needed to try it out — safe defaults kick in automatically.</p>
         </li>
         <li>
           <h3>2. Start the stack</h3>
           <pre><code>docker compose up -d</code></pre>
-          <p>Boots PostgreSQL, Redis, the API, two Celery workers, and the frontend.</p>
+          <p>Boots PostgreSQL, Redis, the API, two Celery workers, and the frontend — pulling the images below automatically.</p>
+          <pre><code>docker.io/mcmwhfysec/sbom-shield-backend:latest
+docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
         </li>
         <li>
           <h3>3. Log in</h3>
@@ -243,7 +245,7 @@ $ docker compose up -d
     <section class="section container cta">
       <h2>Ready to shield your supply chain?</h2>
       <p class="lead">Pull the images and get your first scan running in minutes.</p>
-      <a class="btn btn-primary" href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">Get SBOM-Shield on Docker Hub</a>
+      <a class="btn btn-primary" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">Get SBOM-Shield on Docker Hub</a>
     </section>
 
   </main>
@@ -252,9 +254,9 @@ $ docker compose up -d
     <div class="container footer-inner">
       <span>🛡️ SBOM-Shield</span>
       <span>
-        <a href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">Docker Hub</a>
+        <a href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">Docker Hub</a>
         ·
-        <a href="https://github.com/marius-cornaciu/sca-scanner" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/marius-cornaciu/sbom-shield-website" target="_blank" rel="noopener">Website Source</a>
       </span>
     </div>
   </footer>

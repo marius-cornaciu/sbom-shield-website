@@ -6,9 +6,22 @@ detection, and AI/ML compliance (EU AI Act, OWASP LLM Top 10, MITRE ATLAS, NIST
 AI RMF).
 
 Built with plain HTML + CSS — no build step, no dependencies. Content is kept in
-sync with the docs in the main [sca-scanner](https://github.com/marius-cornaciu/sca-scanner)
-repo (`README.md`, `AI-Compliance.md`, `quick-start.md`, …) — re-check `index.html`
-against those whenever the product changes materially.
+sync with the docs in the main sca-scanner repo (`README.md`, `AI-Compliance.md`,
+`quick-start.md`, …) — re-check `index.html` against those whenever the product
+changes materially. sca-scanner itself is private, so it isn't linked here.
+
+## docker-compose.yml / env.prod.example
+
+These are mirrored here **from sca-scanner on purpose**, not leftovers — sca-scanner
+is private, so `raw.githubusercontent.com` can't serve files from it publicly. This
+repo is the public download point every quickstart command (site + docs) points at:
+
+```bash
+curl -O https://raw.githubusercontent.com/marius-cornaciu/sbom-shield-website/main/docker-compose.yml
+```
+
+Re-copy both files here whenever they change in sca-scanner — there's no
+automation keeping them in sync yet.
 
 ## Preview locally
 
