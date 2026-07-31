@@ -1,8 +1,14 @@
-# SBOM Shield — Presentation Website
+# SBOM-Shield — Presentation Website
 
-Static website presenting **SBOM Shield**, a free self-hosted SBOM platform distributed via Docker Hub.
+Static website presenting **SBOM-Shield**, a free self-hosted Software Composition
+Analysis platform distributed via Docker Hub — vulnerability scanning, secrets
+detection, and AI/ML compliance (EU AI Act, OWASP LLM Top 10, MITRE ATLAS, NIST
+AI RMF).
 
-Built with plain HTML + CSS — no build step, no dependencies. Ready for GitHub Pages.
+Built with plain HTML + CSS — no build step, no dependencies. Content is kept in
+sync with the docs in the main [sca-scanner](https://github.com/marius-cornaciu/sca-scanner)
+repo (`README.md`, `AI-Compliance.md`, `quick-start.md`, …) — re-check `index.html`
+against those whenever the product changes materially.
 
 ## Preview locally
 
@@ -14,22 +20,11 @@ python3 -m http.server 8000
 
 ## Publish on GitHub Pages
 
-1. Create a repo on GitHub (e.g. `sbom-shield-website`) and push this project:
+This repo already tracks `origin` → `github.com/marius-cornaciu/sbom-shield-website`.
+Push to `main` and GitHub Pages (**Settings → Pages → Source: Deploy from a branch →
+`main` / root**) picks it up automatically — live at
+`https://marius-cornaciu.github.io/sbom-shield-website/` within a minute or two.
 
-   ```bash
-   git remote add origin git@github.com:marius-cornaciu/sbom-shield-website.git
-   git push -u origin main
-   ```
-
-2. On GitHub: **Settings → Pages → Source: Deploy from a branch → Branch: `main` / root → Save**.
-
-3. Your site goes live at `https://marius-cornaciu.github.io/sbom-shield-website/` within a minute or two.
-
-## Before publishing
-
-Replace the placeholders in `index.html` and this README:
-
-- `YOUR_DOCKERHUB_USER` — your Docker Hub username (used in `docker pull` commands and links)
-- `marius-cornaciu` — your GitHub username (footer / links)
-
-Also review the feature list, port number (`8080`), and FAQ answers so they match what your platform actually does.
+```bash
+git push origin main
+```

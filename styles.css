@@ -212,6 +212,28 @@ p code, li code {
   padding: 0.1rem 0.4rem;
 }
 
+/* Utility */
+.center { text-align: center; }
+
+/* Pills (frameworks, ecosystems) */
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+.pill {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+}
+
 /* FAQ */
 #faq details {
   max-width: 720px;

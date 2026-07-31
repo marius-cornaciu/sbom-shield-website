@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SBOM Shield — a free, self-hosted platform for generating and analyzing Software Bills of Materials. Available on Docker Hub." />
-  <title>SBOM Shield — Free SBOM Security Platform</title>
+  <meta name="description" content="SBOM-Shield — a free, self-hosted Software Composition Analysis platform with vulnerability scanning, secrets detection, and regulator-ready AI/ML compliance (EU AI Act, OWASP LLM Top 10, MITRE ATLAS, NIST AI RMF). Available on Docker Hub." />
+  <title>SBOM-Shield — Self-Hosted SCA &amp; AI Compliance Platform</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
 </head>
@@ -14,14 +14,15 @@
     <nav class="nav container">
       <a class="brand" href="#top">
         <span class="brand-icon">🛡️</span>
-        <span class="brand-name">SBOM&nbsp;Shield</span>
+        <span class="brand-name">SBOM&#8209;Shield</span>
       </a>
       <div class="nav-links">
         <a href="#features">Features</a>
+        <a href="#ai-compliance">AI Compliance</a>
         <a href="#quickstart">Quick Start</a>
         <a href="#how-it-works">How It Works</a>
         <a href="#faq">FAQ</a>
-        <a class="btn btn-ghost" href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">Docker Hub</a>
+        <a class="btn btn-ghost" href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">Docker Hub</a>
       </div>
     </nav>
   </header>
@@ -30,22 +31,23 @@
 
     <!-- Hero -->
     <section class="hero container">
-      <p class="badge">Free &amp; self-hosted • Distributed via Docker Hub</p>
-      <h1>Know exactly what's inside your software.</h1>
+      <p class="badge">Free &amp; self-hosted • Docker Hub + Helm for Kubernetes</p>
+      <h1>Know exactly what's inside your software — including your AI.</h1>
       <p class="lead">
-        SBOM Shield is a free platform that generates, stores, and analyzes
-        <strong>Software Bills of Materials</strong> for your projects and container images —
-        so you can spot vulnerable dependencies before they become incidents.
+        SBOM-Shield is a free, self-hosted <strong>Software Composition Analysis</strong> platform.
+        Scan repositories, container images, or uploaded SBOMs for vulnerabilities and leaked
+        secrets — and get a regulator-ready view of every AI/ML dependency, mapped to the
+        EU AI Act, OWASP LLM Top 10, MITRE ATLAS, and NIST AI RMF.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#quickstart">Get Started</a>
-        <a class="btn btn-secondary" href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">View on Docker Hub</a>
+        <a class="btn btn-secondary" href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">View on Docker Hub</a>
       </div>
       <div class="hero-terminal" aria-label="Example command">
         <div class="terminal-bar"><span></span><span></span><span></span></div>
-        <pre><code>$ docker pull YOUR_DOCKERHUB_USER/sbom-shield:latest
-$ docker run -d -p 8080:8080 YOUR_DOCKERHUB_USER/sbom-shield:latest
-→ SBOM Shield running at http://localhost:8080</code></pre>
+        <pre><code>$ curl -O https://raw.githubusercontent.com/marius-cornaciu/sca-scanner/main/docker-compose.yml
+$ docker compose up -d
+→ SBOM-Shield running at http://localhost:9000 (log in: admin / admin)</code></pre>
       </div>
     </section>
 
@@ -54,73 +56,155 @@ $ docker run -d -p 8080:8080 YOUR_DOCKERHUB_USER/sbom-shield:latest
       <h2>Features</h2>
       <div class="grid">
         <div class="card">
-          <h3>📦 SBOM Generation</h3>
-          <p>Generate SBOMs in standard formats (SPDX, CycloneDX) from source trees and container images.</p>
+          <h3>🔍 Vulnerability Scanning</h3>
+          <p>Every component matched against OSV.dev across 15 ecosystems (npm, PyPI, Maven, Go, NuGet, RubyGems, crates.io, Debian, RHEL, Alpine, and more), enriched with CVSS v3.1 and EPSS exploit-probability scores.</p>
         </div>
         <div class="card">
-          <h3>🔍 Vulnerability Analysis</h3>
-          <p>Match every component against known CVE databases and get a clear, prioritized risk report.</p>
+          <h3>🔒 Secrets Detection</h3>
+          <p>Gitleaks scans container image filesystems and repository working trees for exposed credentials — all findings rated CRITICAL, since a leaked secret is immediately exploitable.</p>
         </div>
         <div class="card">
-          <h3>📜 License Compliance</h3>
-          <p>See every license in your dependency tree and catch incompatible or risky licenses early.</p>
+          <h3>🤖 AI Compliance (flagship)</h3>
+          <p>Turns your SBOM into a regulator-ready AI/ML risk view — EU AI Act tiering, OWASP LLM Top 10, MITRE ATLAS, NIST AI RMF, GDPR data-residency — entirely from static analysis, zero LLM calls.</p>
         </div>
         <div class="card">
-          <h3>🗄️ Central Inventory</h3>
-          <p>Keep all your SBOMs in one searchable place — know instantly which projects use an affected package.</p>
+          <h3>📦 Three Ways to Scan</h3>
+          <p>Upload a CycloneDX/SPDX SBOM, point at a container image, or give it a Git repository URL. Image and repo scans also generate the SBOM for you and run secrets detection.</p>
         </div>
         <div class="card">
-          <h3>🐳 One-Command Deploy</h3>
-          <p>Ships as a single Docker image. No accounts, no cloud lock-in — run it anywhere Docker runs.</p>
+          <h3>🔌 Built for CI/CD</h3>
+          <p>A full REST API with scoped read/write API tokens, a ready-to-use GitLab CI template, and VEX import/export for triage data that travels with your pipeline.</p>
         </div>
         <div class="card">
-          <h3>🆓 Free Forever</h3>
-          <p>SBOM Shield is free to use. Pull it from Docker Hub and own your software supply-chain data.</p>
+          <h3>⚡ Zero-Config Quick Start</h3>
+          <p>One <code>docker compose up</code> and you're in — no <code>.env</code> file required. Secrets auto-generate safely on first boot; harden them before exposing the instance publicly.</p>
+        </div>
+        <div class="card">
+          <h3>☸️ Kubernetes &amp; OpenShift Ready</h3>
+          <p>A production Helm chart ships in the repo — non-root images, OpenShift restricted-v2 SCC compatible out of the box, no special SCC grant needed.</p>
+        </div>
+        <div class="card">
+          <h3>🆓 Free &amp; Self-Hosted</h3>
+          <p>No accounts, no cloud lock-in, no per-seat pricing. Every scan and every finding stays on infrastructure you control.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Compliance spotlight -->
+    <section id="ai-compliance" class="section section-alt">
+      <div class="container">
+        <h2>AI Compliance &amp; Governance</h2>
+        <p class="lead center">
+          A traditional SCA scanner tells you <code>langchain==0.2.5</code> has a CVE. It can't tell
+          you whether the project that uses it falls under the EU AI Act, which OWASP LLM risks
+          apply, or what your vendor lock-in and monthly inference spend look like. SBOM-Shield
+          answers all of that — straight from your existing SBOMs, with no runtime instrumentation
+          and no calls to an external LLM.
+        </p>
+
+        <div class="pill-row" aria-label="Frameworks covered">
+          <span class="pill">EU AI Act (Annex III)</span>
+          <span class="pill">OWASP LLM Top 10</span>
+          <span class="pill">MITRE ATLAS</span>
+          <span class="pill">NIST AI RMF</span>
+          <span class="pill">GDPR data residency</span>
+        </div>
+
+        <div class="grid grid-3" style="margin-top: 2rem;">
+          <div class="card">
+            <h3>EU AI Act tiering</h3>
+            <p>A ten-question Annex III questionnaire resolves each project to Prohibited / High / Limited / Minimal risk — server-side computed so the API and the findings engine can never disagree.</p>
+          </div>
+          <div class="card">
+            <h3>Vendor lock-in &amp; cost forecast</h3>
+            <p>Per-provider integration-depth scoring plus a projected monthly inference spend, with a configurable budget ceiling and over-budget warnings.</p>
+          </div>
+          <div class="card">
+            <h3>Supply-chain trust score</h3>
+            <p>Every AI dependency gets a 0–100 trust score from vendor backing, signed releases, maintenance activity, and known takeover incidents — surfaced portfolio-wide.</p>
+          </div>
+          <div class="card">
+            <h3>AI delta &amp; webhooks</h3>
+            <p>Know the moment a new AI/ML dependency lands between scans, with an optional webhook so a governance review can happen before it ships.</p>
+          </div>
+          <div class="card">
+            <h3>AIBOM export</h3>
+            <p>Export a CycloneDX 1.6 document containing only the AI/ML components, each enriched with category, vendor, and match-confidence properties.</p>
+          </div>
+          <div class="card">
+            <h3>Deterministic findings engine</h3>
+            <p>Consultant-style findings — severity, standard citation, evidence, remediation — with a 0–100 posture score per category. No LLM in the loop, fully reproducible.</p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Quick start -->
-    <section id="quickstart" class="section section-alt">
-      <div class="container">
-        <h2>Quick Start</h2>
-        <ol class="steps">
-          <li>
-            <h3>1. Pull the image</h3>
-            <pre><code>docker pull YOUR_DOCKERHUB_USER/sbom-shield:latest</code></pre>
-          </li>
-          <li>
-            <h3>2. Run the platform</h3>
-            <pre><code>docker run -d \
-  --name sbom-shield \
-  -p 8080:8080 \
-  -v sbom-shield-data:/data \
-  YOUR_DOCKERHUB_USER/sbom-shield:latest</code></pre>
-          </li>
-          <li>
-            <h3>3. Open the dashboard</h3>
-            <p>Visit <code>http://localhost:8080</code> and scan your first project or image.</p>
-          </li>
-        </ol>
-      </div>
+    <section id="quickstart" class="section container">
+      <h2>Quick Start</h2>
+      <ol class="steps">
+        <li>
+          <h3>1. Get the compose file</h3>
+          <pre><code>curl -O https://raw.githubusercontent.com/marius-cornaciu/sca-scanner/main/docker-compose.yml</code></pre>
+          <p>No <code>.env</code> needed to try it out — safe defaults kick in automatically.</p>
+        </li>
+        <li>
+          <h3>2. Start the stack</h3>
+          <pre><code>docker compose up -d</code></pre>
+          <p>Boots PostgreSQL, Redis, the API, two Celery workers, and the frontend.</p>
+        </li>
+        <li>
+          <h3>3. Log in</h3>
+          <p>Open <code>http://localhost:9000</code> and log in with <code>admin</code> / <code>admin</code> — you'll be asked to set a real password immediately. Set <code>SECRET_KEY</code>, <code>POSTGRES_PASSWORD</code>, and <code>ADMIN_PASSWORD</code> explicitly before exposing the instance beyond your own machine.</p>
+        </li>
+      </ol>
     </section>
 
     <!-- How it works -->
-    <section id="how-it-works" class="section container">
-      <h2>How It Works</h2>
-      <div class="grid grid-3">
-        <div class="card">
-          <h3>1 — Scan</h3>
-          <p>Point SBOM Shield at a repository, directory, or container image. It inventories every component and dependency.</p>
+    <section id="how-it-works" class="section section-alt">
+      <div class="container">
+        <h2>How It Works</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>📄 SBOM Upload</h3>
+            <p>Upload a CycloneDX 1.4–1.6 or SPDX 2.3 file. Fastest path if you already generate SBOMs in your build.</p>
+          </div>
+          <div class="card">
+            <h3>🐳 Image Scan</h3>
+            <p>Give it an image reference — Crane pulls it once, Syft generates the SBOM, and Gitleaks scans the same archive for secrets. Covers the OS/base-image layer.</p>
+          </div>
+          <div class="card">
+            <h3>📂 Repository Scan</h3>
+            <p>Give it a Git URL — the worker clones it, runs Syft for a full application-layer SBOM, and optionally Gitleaks against the working tree.</p>
+          </div>
         </div>
-        <div class="card">
-          <h3>2 — Analyze</h3>
-          <p>Components are cross-referenced with vulnerability and license databases to build a complete risk picture.</p>
-        </div>
-        <div class="card">
-          <h3>3 — Act</h3>
-          <p>Export standards-compliant SBOMs, review prioritized findings, and track your remediation over time.</p>
-        </div>
+        <p class="lead center" style="margin-top: 2rem;">
+          Every finding is cross-referenced against OSV.dev, deduplicated across advisory sources
+          (<code>GHSA &gt; CVE &gt; RustSec &gt; Go &gt; PYSEC &gt; OSV</code>), and tracked over time —
+          Celery Beat re-scans daily so newly published advisories surface automatically.
+        </p>
+      </div>
+    </section>
+
+    <!-- Ecosystems -->
+    <section class="section container">
+      <h2>Supported Ecosystems</h2>
+      <div class="pill-row" aria-label="Supported package ecosystems">
+        <span class="pill">npm</span>
+        <span class="pill">PyPI</span>
+        <span class="pill">Maven</span>
+        <span class="pill">Go</span>
+        <span class="pill">NuGet</span>
+        <span class="pill">RubyGems</span>
+        <span class="pill">crates.io</span>
+        <span class="pill">Debian / Ubuntu</span>
+        <span class="pill">RHEL / CentOS / Rocky</span>
+        <span class="pill">Alpine</span>
+        <span class="pill">Swift</span>
+        <span class="pill">Packagist (PHP)</span>
+        <span class="pill">Hex (Erlang/Elixir)</span>
+        <span class="pill">Pub (Dart/Flutter)</span>
+        <span class="pill">Conda</span>
       </div>
     </section>
 
@@ -129,20 +213,28 @@ $ docker run -d -p 8080:8080 YOUR_DOCKERHUB_USER/sbom-shield:latest
       <div class="container">
         <h2>FAQ</h2>
         <details>
-          <summary>Is SBOM Shield really free?</summary>
-          <p>Yes. The platform is free to pull from Docker Hub and run on your own infrastructure.</p>
+          <summary>Is SBOM-Shield really free?</summary>
+          <p>Yes. Pull it from Docker Hub and run it on your own infrastructure — no accounts, no per-seat pricing, no cloud lock-in.</p>
         </details>
         <details>
           <summary>What SBOM formats are supported?</summary>
-          <p>Standard formats such as SPDX and CycloneDX, so your SBOMs work with the rest of your toolchain.</p>
+          <p>CycloneDX 1.4–1.6 (XML/JSON) and SPDX 2.3 (JSON) for upload. Image and repository scans generate CycloneDX SBOMs automatically via Syft.</p>
         </details>
         <details>
           <summary>Where does my data go?</summary>
-          <p>Nowhere. SBOM Shield is self-hosted — all scans and SBOMs stay on your own machine or server.</p>
+          <p>Nowhere. SBOM-Shield is fully self-hosted — every scan, SBOM, and finding stays in your own PostgreSQL database.</p>
+        </details>
+        <details>
+          <summary>Does the AI Compliance feature call an external LLM?</summary>
+          <p>No. Classification and findings are entirely deterministic — pattern matching and rules against your SBOM data, with no network calls to any AI provider.</p>
+        </details>
+        <details>
+          <summary>Can I run this on Kubernetes or OpenShift?</summary>
+          <p>Yes — a production Helm chart ships in the repository, with non-root images that satisfy OpenShift's restricted-v2 SCC out of the box.</p>
         </details>
         <details>
           <summary>What do I need to run it?</summary>
-          <p>Just Docker (or any OCI-compatible runtime). One <code>docker run</code> command and you're up.</p>
+          <p>Docker or Podman (or any OCI-compatible runtime). One <code>docker compose up -d</code> command and you're up — see Quick Start above.</p>
         </details>
       </div>
     </section>
@@ -150,19 +242,19 @@ $ docker run -d -p 8080:8080 YOUR_DOCKERHUB_USER/sbom-shield:latest
     <!-- CTA -->
     <section class="section container cta">
       <h2>Ready to shield your supply chain?</h2>
-      <p class="lead">Pull the image and get your first SBOM in minutes.</p>
-      <a class="btn btn-primary" href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">Get SBOM Shield on Docker Hub</a>
+      <p class="lead">Pull the images and get your first scan running in minutes.</p>
+      <a class="btn btn-primary" href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">Get SBOM-Shield on Docker Hub</a>
     </section>
 
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>🛡️ SBOM Shield</span>
+      <span>🛡️ SBOM-Shield</span>
       <span>
-        <a href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">Docker Hub</a>
+        <a href="https://hub.docker.com/r/mcmwhfysec/sbom-shield-backend" target="_blank" rel="noopener">Docker Hub</a>
         ·
-        <a href="https://github.com/marius-cornaciu/sbom-shield" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/marius-cornaciu/sca-scanner" target="_blank" rel="noopener">GitHub</a>
       </span>
     </div>
   </footer>
