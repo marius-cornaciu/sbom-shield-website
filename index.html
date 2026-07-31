@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SBOM Shield — a free, self-hosted platform for generating and analyzing Software Bills of Materials. Available on Docker Hub." />
+  <title>SBOM Shield — Free SBOM Security Platform</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="#top">
+        <span class="brand-icon">🛡️</span>
+        <span class="brand-name">SBOM&nbsp;Shield</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#quickstart">Quick Start</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn btn-ghost" href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">Docker Hub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- Hero -->
+    <section class="hero container">
+      <p class="badge">Free &amp; self-hosted • Distributed via Docker Hub</p>
+      <h1>Know exactly what's inside your software.</h1>
+      <p class="lead">
+        SBOM Shield is a free platform that generates, stores, and analyzes
+        <strong>Software Bills of Materials</strong> for your projects and container images —
+        so you can spot vulnerable dependencies before they become incidents.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#quickstart">Get Started</a>
+        <a class="btn btn-secondary" href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">View on Docker Hub</a>
+      </div>
+      <div class="hero-terminal" aria-label="Example command">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <pre><code>$ docker pull YOUR_DOCKERHUB_USER/sbom-shield:latest
+$ docker run -d -p 8080:8080 YOUR_DOCKERHUB_USER/sbom-shield:latest
+→ SBOM Shield running at http://localhost:8080</code></pre>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section container">
+      <h2>Features</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>📦 SBOM Generation</h3>
+          <p>Generate SBOMs in standard formats (SPDX, CycloneDX) from source trees and container images.</p>
+        </div>
+        <div class="card">
+          <h3>🔍 Vulnerability Analysis</h3>
+          <p>Match every component against known CVE databases and get a clear, prioritized risk report.</p>
+        </div>
+        <div class="card">
+          <h3>📜 License Compliance</h3>
+          <p>See every license in your dependency tree and catch incompatible or risky licenses early.</p>
+        </div>
+        <div class="card">
+          <h3>🗄️ Central Inventory</h3>
+          <p>Keep all your SBOMs in one searchable place — know instantly which projects use an affected package.</p>
+        </div>
+        <div class="card">
+          <h3>🐳 One-Command Deploy</h3>
+          <p>Ships as a single Docker image. No accounts, no cloud lock-in — run it anywhere Docker runs.</p>
+        </div>
+        <div class="card">
+          <h3>🆓 Free Forever</h3>
+          <p>SBOM Shield is free to use. Pull it from Docker Hub and own your software supply-chain data.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick start -->
+    <section id="quickstart" class="section section-alt">
+      <div class="container">
+        <h2>Quick Start</h2>
+        <ol class="steps">
+          <li>
+            <h3>1. Pull the image</h3>
+            <pre><code>docker pull YOUR_DOCKERHUB_USER/sbom-shield:latest</code></pre>
+          </li>
+          <li>
+            <h3>2. Run the platform</h3>
+            <pre><code>docker run -d \
+  --name sbom-shield \
+  -p 8080:8080 \
+  -v sbom-shield-data:/data \
+  YOUR_DOCKERHUB_USER/sbom-shield:latest</code></pre>
+          </li>
+          <li>
+            <h3>3. Open the dashboard</h3>
+            <p>Visit <code>http://localhost:8080</code> and scan your first project or image.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="section container">
+      <h2>How It Works</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>1 — Scan</h3>
+          <p>Point SBOM Shield at a repository, directory, or container image. It inventories every component and dependency.</p>
+        </div>
+        <div class="card">
+          <h3>2 — Analyze</h3>
+          <p>Components are cross-referenced with vulnerability and license databases to build a complete risk picture.</p>
+        </div>
+        <div class="card">
+          <h3>3 — Act</h3>
+          <p>Export standards-compliant SBOMs, review prioritized findings, and track your remediation over time.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section section-alt">
+      <div class="container">
+        <h2>FAQ</h2>
+        <details>
+          <summary>Is SBOM Shield really free?</summary>
+          <p>Yes. The platform is free to pull from Docker Hub and run on your own infrastructure.</p>
+        </details>
+        <details>
+          <summary>What SBOM formats are supported?</summary>
+          <p>Standard formats such as SPDX and CycloneDX, so your SBOMs work with the rest of your toolchain.</p>
+        </details>
+        <details>
+          <summary>Where does my data go?</summary>
+          <p>Nowhere. SBOM Shield is self-hosted — all scans and SBOMs stay on your own machine or server.</p>
+        </details>
+        <details>
+          <summary>What do I need to run it?</summary>
+          <p>Just Docker (or any OCI-compatible runtime). One <code>docker run</code> command and you're up.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section container cta">
+      <h2>Ready to shield your supply chain?</h2>
+      <p class="lead">Pull the image and get your first SBOM in minutes.</p>
+      <a class="btn btn-primary" href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">Get SBOM Shield on Docker Hub</a>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>🛡️ SBOM Shield</span>
+      <span>
+        <a href="https://hub.docker.com/r/YOUR_DOCKERHUB_USER/sbom-shield" target="_blank" rel="noopener">Docker Hub</a>
+        ·
+        <a href="https://github.com/marius-cornaciu/sbom-shield" target="_blank" rel="noopener">GitHub</a>
+      </span>
+    </div>
+  </footer>
+
+</body>
+</html>
