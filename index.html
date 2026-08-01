@@ -30,60 +30,116 @@
   <main id="top">
 
     <!-- Hero -->
-    <section class="hero container">
-      <p class="badge">Free &amp; self-hosted • Docker Hub + Helm for Kubernetes</p>
-      <h1>Know exactly what's inside your software — including your AI.</h1>
-      <p class="lead">
-        SBOM-Shield is a free, self-hosted <strong>Software Composition Analysis</strong> platform.
-        Scan repositories, container images, or uploaded SBOMs for vulnerabilities and leaked
-        secrets — and get a regulator-ready view of every AI/ML dependency, mapped to the
-        EU AI Act, OWASP LLM Top 10, MITRE ATLAS, and NIST AI RMF.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#quickstart">Get Started</a>
-        <a class="btn btn-secondary" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">View on Docker Hub</a>
+    <section class="hero-wrap">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="badge">Free &amp; self-hosted • Docker Hub + Helm for Kubernetes</p>
+          <h1>Know exactly what's inside your software — including your AI.</h1>
+          <p class="lead">
+            SBOM-Shield is a free, self-hosted <strong>Software Composition Analysis</strong> platform.
+            Scan repositories, container images, or uploaded SBOMs for vulnerabilities and leaked
+            secrets — and get a regulator-ready view of every AI/ML dependency, mapped to the
+            EU AI Act, OWASP LLM Top 10, MITRE ATLAS, and NIST AI RMF.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#quickstart">Get Started</a>
+            <a class="btn btn-secondary" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">View on Docker Hub</a>
+          </div>
+        </div>
+
+        <!-- Animated demo: types the real quickstart commands, then morphs into a live findings dashboard -->
+        <div class="hero-visual">
+          <div class="demo-frame" id="heroDemo">
+            <div class="terminal-bar">
+              <span></span><span></span><span></span>
+              <span class="demo-frame-label">sbom-shield — scan</span>
+            </div>
+            <div class="demo-body">
+              <pre class="demo-terminal"><code></code><span class="demo-cursor" aria-hidden="true"></span></pre>
+              <div class="demo-dashboard">
+                <div class="demo-stats">
+                  <div class="stat-tile">
+                    <span class="stat-num">15</span>
+                    <span class="stat-label">ecosystems</span>
+                  </div>
+                  <div class="stat-tile">
+                    <span class="stat-num">4</span>
+                    <span class="stat-label">compliance frameworks</span>
+                  </div>
+                  <div class="stat-tile">
+                    <span class="stat-num">3</span>
+                    <span class="stat-label">scan paths</span>
+                  </div>
+                  <div class="stat-tile">
+                    <span class="stat-num">0</span>
+                    <span class="stat-label">LLM calls</span>
+                  </div>
+                </div>
+                <div class="demo-dash-head">
+                  <span class="demo-dash-target">nginx:latest</span>
+                  <span class="demo-dash-status">scanning…</span>
+                </div>
+                <div class="sev-bar" role="img" aria-label="Vulnerability severity breakdown: 8% critical, 22% high, 35% medium, 35% low">
+                  <span class="sev-seg sev-critical" style="--w:0%"></span>
+                  <span class="sev-seg sev-high" style="--w:0%"></span>
+                  <span class="sev-seg sev-medium" style="--w:0%"></span>
+                <span class="sev-seg sev-low" style="--w:0%"></span>
+              </div>
+              <div class="sev-legend">
+                <span><i class="sev-dot sev-critical"></i>Critical</span>
+                <span><i class="sev-dot sev-high"></i>High</span>
+                <span><i class="sev-dot sev-medium"></i>Medium</span>
+                <span><i class="sev-dot sev-low"></i>Low</span>
+              </div>
+              <div class="demo-chip-row">
+                <span class="demo-chip">📈 EPSS scored</span>
+                <span class="demo-chip demo-chip-accent">⚖️ AI Act tier: Limited</span>
+                <span class="demo-chip">🔒 0 secrets leaked</span>
+                <span class="demo-chip">🔗 SLSA 0–3 trust</span>
+                <span class="demo-chip">🐳 Image scan</span>
+                <span class="demo-chip">📂 Repo scan</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="hero-terminal" aria-label="Example command">
-        <div class="terminal-bar"><span></span><span></span><span></span></div>
-        <pre><code>$ curl -O https://raw.githubusercontent.com/marius-cornaciu/sbom-shield-website/main/docker-compose.yml
-$ docker compose up -d
-→ SBOM-Shield running at http://localhost:9000 (log in: admin / admin)</code></pre>
       </div>
     </section>
 
     <!-- Features -->
     <section id="features" class="section container">
-      <h2>Features</h2>
+      <h2 class="reveal">Features</h2>
       <div class="grid">
-        <div class="card">
+        <div class="card reveal">
           <h3>🔍 Vulnerability Scanning</h3>
           <p>Every component matched against OSV.dev across 15 ecosystems (npm, PyPI, Maven, Go, NuGet, RubyGems, crates.io, Debian, RHEL, Alpine, and more), enriched with CVSS v3.1 and EPSS exploit-probability scores.</p>
         </div>
-        <div class="card">
+        <div class="card reveal">
           <h3>🔒 Secrets Detection</h3>
           <p>Gitleaks scans container image filesystems and repository working trees for exposed credentials — all findings rated CRITICAL, since a leaked secret is immediately exploitable.</p>
         </div>
-        <div class="card">
+        <div class="card reveal">
           <h3>🤖 AI Compliance (flagship)</h3>
           <p>Turns your SBOM into a regulator-ready AI/ML risk view — EU AI Act tiering, OWASP LLM Top 10, MITRE ATLAS, NIST AI RMF, GDPR data-residency — entirely from static analysis, zero LLM calls.</p>
         </div>
-        <div class="card">
+        <div class="card reveal">
           <h3>📦 Three Ways to Scan</h3>
           <p>Upload a CycloneDX/SPDX SBOM, point at a container image, or give it a Git repository URL. Image and repo scans also generate the SBOM for you and run secrets detection.</p>
         </div>
-        <div class="card">
+        <div class="card reveal">
           <h3>🔌 Built for CI/CD</h3>
           <p>A full REST API with scoped read/write API tokens, a ready-to-use GitLab CI template, and VEX import/export for triage data that travels with your pipeline.</p>
         </div>
-        <div class="card">
+        <div class="card reveal">
           <h3>⚡ Zero-Config Quick Start</h3>
           <p>One <code>docker compose up</code> and you're in — no <code>.env</code> file required. Secrets auto-generate safely on first boot; harden them before exposing the instance publicly.</p>
         </div>
-        <div class="card">
+        <div class="card reveal">
           <h3>☸️ Kubernetes &amp; OpenShift Ready</h3>
           <p>A production Helm chart ships in the repo — non-root images, OpenShift restricted-v2 SCC compatible out of the box, no special SCC grant needed.</p>
         </div>
-        <div class="card">
+        <div class="card reveal">
           <h3>🆓 Free &amp; Self-Hosted</h3>
           <p>No accounts, no cloud lock-in, no per-seat pricing. Every scan and every finding stays on infrastructure you control.</p>
         </div>
@@ -93,8 +149,8 @@ $ docker compose up -d
     <!-- AI Compliance spotlight -->
     <section id="ai-compliance" class="section section-alt">
       <div class="container">
-        <h2>AI Compliance &amp; Governance</h2>
-        <p class="lead center">
+        <h2 class="reveal">AI Compliance &amp; Governance</h2>
+        <p class="lead center reveal">
           A traditional SCA scanner tells you <code>langchain==0.2.5</code> has a CVE. It can't tell
           you whether the project that uses it falls under the EU AI Act, which OWASP LLM risks
           apply, or what your vendor lock-in and monthly inference spend look like. SBOM-Shield
@@ -102,7 +158,7 @@ $ docker compose up -d
           and no calls to an external LLM.
         </p>
 
-        <div class="pill-row" aria-label="Frameworks covered">
+        <div class="pill-row reveal" aria-label="Frameworks covered">
           <span class="pill">EU AI Act (Annex III)</span>
           <span class="pill">OWASP LLM Top 10</span>
           <span class="pill">MITRE ATLAS</span>
@@ -111,27 +167,27 @@ $ docker compose up -d
         </div>
 
         <div class="grid grid-3" style="margin-top: 2rem;">
-          <div class="card">
+          <div class="card reveal">
             <h3>EU AI Act tiering</h3>
             <p>A ten-question Annex III questionnaire resolves each project to Prohibited / High / Limited / Minimal risk — server-side computed so the API and the findings engine can never disagree.</p>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <h3>Vendor lock-in &amp; cost forecast</h3>
             <p>Per-provider integration-depth scoring plus a projected monthly inference spend, with a configurable budget ceiling and over-budget warnings.</p>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <h3>Supply-chain trust score</h3>
             <p>Every AI dependency gets a 0–100 trust score from vendor backing, signed releases, maintenance activity, and known takeover incidents — surfaced portfolio-wide.</p>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <h3>AI delta &amp; webhooks</h3>
             <p>Know the moment a new AI/ML dependency lands between scans, with an optional webhook so a governance review can happen before it ships.</p>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <h3>AIBOM export</h3>
             <p>Export a CycloneDX 1.6 document containing only the AI/ML components, each enriched with category, vendor, and match-confidence properties.</p>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <h3>Deterministic findings engine</h3>
             <p>Consultant-style findings — severity, standard citation, evidence, remediation — with a 0–100 posture score per category. No LLM in the loop, fully reproducible.</p>
           </div>
@@ -141,21 +197,21 @@ $ docker compose up -d
 
     <!-- Quick start -->
     <section id="quickstart" class="section container">
-      <h2>Quick Start</h2>
+      <h2 class="reveal">Quick Start</h2>
       <ol class="steps">
-        <li>
+        <li class="reveal">
           <h3>1. Get the compose file</h3>
           <pre><code>curl -O https://raw.githubusercontent.com/marius-cornaciu/sbom-shield-website/main/docker-compose.yml</code></pre>
           <p>No <code>.env</code> needed to try it out — safe defaults kick in automatically.</p>
         </li>
-        <li>
+        <li class="reveal">
           <h3>2. Start the stack</h3>
           <pre><code>docker compose up -d</code></pre>
           <p>Boots PostgreSQL, Redis, the API, two Celery workers, and the frontend — pulling the images below automatically.</p>
           <pre><code>docker.io/mcmwhfysec/sbom-shield-backend:latest
 docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
         </li>
-        <li>
+        <li class="reveal">
           <h3>3. Log in</h3>
           <p>Open <code>http://localhost:9000</code> and log in with <code>admin</code> / <code>admin</code> — you'll be asked to set a real password immediately. Set <code>SECRET_KEY</code>, <code>POSTGRES_PASSWORD</code>, and <code>ADMIN_PASSWORD</code> explicitly before exposing the instance beyond your own machine.</p>
         </li>
@@ -165,22 +221,110 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
     <!-- How it works -->
     <section id="how-it-works" class="section section-alt">
       <div class="container">
-        <h2>How It Works</h2>
+        <h2 class="reveal">How It Works</h2>
         <div class="grid grid-3">
-          <div class="card">
+          <div class="card reveal">
             <h3>📄 SBOM Upload</h3>
             <p>Upload a CycloneDX 1.4–1.6 or SPDX 2.3 file. Fastest path if you already generate SBOMs in your build.</p>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <h3>🐳 Image Scan</h3>
             <p>Give it an image reference — Crane pulls it once, Syft generates the SBOM, and Gitleaks scans the same archive for secrets. Covers the OS/base-image layer.</p>
           </div>
-          <div class="card">
+          <div class="card reveal">
             <h3>📂 Repository Scan</h3>
             <p>Give it a Git URL — the worker clones it, runs Syft for a full application-layer SBOM, and optionally Gitleaks against the working tree.</p>
           </div>
         </div>
-        <p class="lead center" style="margin-top: 2rem;">
+
+        <!-- Real pipeline diagram, ported from the app's own About page (ScanningFlowSchema) -->
+        <div class="diagram-frame reveal">
+          <svg viewBox="0 0 960 744" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sf-title">
+            <title id="sf-title">SBOM-Shield security scanning flow, 7 steps</title>
+            <text x="480" y="30" font-size="20" font-weight="800" fill="#c9d1d9" text-anchor="middle">SBOM-Shield — Security Scanning Flow</text>
+            <text x="480" y="52" font-size="11" fill="#94a3b8" text-anchor="middle">Input your project via:</text>
+            <g>
+              <rect x="190" y="60" width="200" height="30" rx="7" fill="rgba(148,163,184,.07)" stroke="#60a5fa" stroke-width="1.2" />
+              <text x="290" y="73" font-size="11" font-weight="700" fill="#60a5fa" text-anchor="middle">SBOM Upload</text>
+              <text x="290" y="85" font-size="8.5" fill="#94a3b8" text-anchor="middle">CycloneDX / SPDX file</text>
+            </g>
+            <g>
+              <rect x="410" y="60" width="200" height="30" rx="7" fill="rgba(148,163,184,.07)" stroke="#22c55e" stroke-width="1.2" />
+              <text x="510" y="73" font-size="11" font-weight="700" fill="#22c55e" text-anchor="middle">Container Image</text>
+              <text x="510" y="85" font-size="8.5" fill="#94a3b8" text-anchor="middle">nginx:latest · gcr.io/… · platform pick</text>
+            </g>
+            <g>
+              <rect x="630" y="60" width="200" height="30" rx="7" fill="rgba(148,163,184,.07)" stroke="#a78bfa" stroke-width="1.2" />
+              <text x="730" y="73" font-size="11" font-weight="700" fill="#a78bfa" text-anchor="middle">Git Repository</text>
+              <text x="730" y="85" font-size="8.5" fill="#94a3b8" text-anchor="middle">https://github.com/…</text>
+            </g>
+            <g>
+              <rect x="80" y="96" width="800" height="74" rx="9" fill="rgba(148,163,184,.05)" stroke="#38bdf8" stroke-width="1.4" />
+              <circle cx="110" cy="133" r="14" fill="#38bdf8" opacity="0.9" />
+              <text x="110" y="137" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">1</text>
+              <text x="138" y="120" font-size="13" font-weight="700" fill="#38bdf8">SBOM Generation (Syft)</text>
+              <text x="138" y="138" font-size="10" fill="#94a3b8">Image &amp; repository scans generate a CycloneDX SBOM server-side (crane pull once / full single-branch clone)</text>
+              <text x="138" y="153" font-size="10" fill="#94a3b8">Pre-built SBOM uploads are used directly — no re-generation. Repos get a per-ecosystem lockfile coverage warning</text>
+            </g>
+            <g>
+              <line x1="480" y1="170" x2="480" y2="180" stroke="#64748b" stroke-width="1.2" />
+              <rect x="80" y="182" width="800" height="74" rx="9" fill="rgba(148,163,184,.05)" stroke="#22c55e" stroke-width="1.4" />
+              <circle cx="110" cy="219" r="14" fill="#22c55e" opacity="0.9" />
+              <text x="110" y="223" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">2</text>
+              <text x="138" y="206" font-size="13" font-weight="700" fill="#22c55e">Vulnerability Scan — routed by layer</text>
+              <text x="138" y="224" font-size="10" fill="#94a3b8">OSV.dev owns application dependencies (npm, PyPI, Maven, Go, Rust, …) · Grype owns the OS/base-image layer</text>
+              <text x="138" y="239" font-size="10" fill="#94a3b8">incl. binary runtimes (distroless) · Canonical/RHEL OVAL override where authoritative · alias dedup → unique CVEs</text>
+            </g>
+            <g>
+              <line x1="480" y1="256" x2="480" y2="266" stroke="#64748b" stroke-width="1.2" />
+              <rect x="80" y="268" width="800" height="74" rx="9" fill="rgba(148,163,184,.05)" stroke="#f43f5e" stroke-width="1.4" />
+              <circle cx="110" cy="305" r="14" fill="#f43f5e" opacity="0.9" />
+              <text x="110" y="309" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">3</text>
+              <text x="138" y="292" font-size="13" font-weight="700" fill="#f43f5e">Secrets &amp; Security Checks (Gitleaks · Cosign · code checks)</text>
+              <text x="138" y="310" font-size="10" fill="#94a3b8">Image &amp; Repository scans only (uploads have no filesystem) · repos: full git history · images: COPY/ADD layers</text>
+              <text x="138" y="325" font-size="10" fill="#94a3b8">Supply-chain trust: signature, digest pinning, SBOM attestation → SLSA 0–3 · all secrets rated CRITICAL</text>
+            </g>
+            <g>
+              <line x1="480" y1="342" x2="480" y2="352" stroke="#64748b" stroke-width="1.2" />
+              <rect x="80" y="354" width="800" height="74" rx="9" fill="rgba(148,163,184,.05)" stroke="#eab308" stroke-width="1.4" />
+              <circle cx="110" cy="391" r="14" fill="#eab308" opacity="0.9" />
+              <text x="110" y="395" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">4</text>
+              <text x="138" y="378" font-size="13" font-weight="700" fill="#eab308">Results Stored in PostgreSQL</text>
+              <text x="138" y="396" font-size="10" fill="#94a3b8">Single BOM per project — a new scan replaces the previous one; AI history snapshots keep the diff working</text>
+              <text x="138" y="411" font-size="10" fill="#94a3b8">first_seen dates and triage decisions survive re-scans — the attribution timeline never resets</text>
+            </g>
+            <g>
+              <line x1="480" y1="428" x2="480" y2="438" stroke="#64748b" stroke-width="1.2" />
+              <rect x="80" y="440" width="800" height="74" rx="9" fill="rgba(148,163,184,.05)" stroke="#a78bfa" stroke-width="1.4" />
+              <circle cx="110" cy="477" r="14" fill="#a78bfa" opacity="0.9" />
+              <text x="110" y="481" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">5</text>
+              <text x="138" y="464" font-size="13" font-weight="700" fill="#a78bfa">Automated Daily Re-scan (Celery Beat)</text>
+              <text x="138" y="482" font-size="10" fill="#94a3b8">Every project re-scanned every 24 h against newly published advisories — no new upload needed</text>
+              <text x="138" y="497" font-size="10" fill="#94a3b8">Grype DB refreshed daily · NVD mirror synced nightly · EPSS scores refreshed · AI inventory snapshot taken</text>
+            </g>
+            <g>
+              <line x1="480" y1="514" x2="480" y2="524" stroke="#64748b" stroke-width="1.2" />
+              <rect x="80" y="526" width="800" height="74" rx="9" fill="rgba(148,163,184,.05)" stroke="#f97316" stroke-width="1.4" />
+              <circle cx="110" cy="563" r="14" fill="#f97316" opacity="0.9" />
+              <text x="110" y="567" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">6</text>
+              <text x="138" y="550" font-size="13" font-weight="700" fill="#f97316">CI/CD Pipeline Gate</text>
+              <text x="138" y="568" font-size="10" fill="#94a3b8">CI uploads the SBOM, polls scan status, checks the severity threshold (e.g. HIGH)</text>
+              <text x="138" y="583" font-size="10" fill="#94a3b8">Exit 0 → pipeline continues to deploy · Exit 1 → pipeline blocked</text>
+            </g>
+            <g>
+              <line x1="480" y1="600" x2="480" y2="610" stroke="#64748b" stroke-width="1.2" />
+              <rect x="80" y="612" width="800" height="74" rx="9" fill="rgba(148,163,184,.05)" stroke="#60a5fa" stroke-width="1.4" />
+              <circle cx="110" cy="649" r="14" fill="#60a5fa" opacity="0.9" />
+              <text x="110" y="653" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">7</text>
+              <text x="138" y="636" font-size="13" font-weight="700" fill="#60a5fa">Triage &amp; SLA Enforcement</text>
+              <text x="138" y="654" font-size="10" fill="#94a3b8">Findings marked IN_TRIAGE / NOT_AFFECTED / FALSE_POSITIVE / EXPLOITABLE / REMEDIATED</text>
+              <text x="138" y="669" font-size="10" fill="#94a3b8">SLA deadlines per severity surface overdue items · decisions exported as CycloneDX VEX</text>
+            </g>
+            <text x="480" y="730" font-size="10.5" fill="#94a3b8" text-anchor="middle">Self-hosted · Docker / Podman Compose · Kubernetes / OpenShift Helm chart · multi-arch images (amd64 + arm64/v8, Cosign-signed)</text>
+          </svg>
+        </div>
+
+        <p class="lead center reveal" style="margin-top: 2rem;">
           Every finding is cross-referenced against OSV.dev, deduplicated across advisory sources
           (<code>GHSA &gt; CVE &gt; RustSec &gt; Go &gt; PYSEC &gt; OSV</code>), and tracked over time —
           Celery Beat re-scans daily so newly published advisories surface automatically.
@@ -190,8 +334,8 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
 
     <!-- Ecosystems -->
     <section class="section container">
-      <h2>Supported Ecosystems</h2>
-      <div class="pill-row" aria-label="Supported package ecosystems">
+      <h2 class="reveal">Supported Ecosystems</h2>
+      <div class="pill-row reveal" aria-label="Supported package ecosystems">
         <span class="pill">npm</span>
         <span class="pill">PyPI</span>
         <span class="pill">Maven</span>
@@ -213,28 +357,28 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
     <!-- FAQ -->
     <section id="faq" class="section section-alt">
       <div class="container">
-        <h2>FAQ</h2>
-        <details>
+        <h2 class="reveal">FAQ</h2>
+        <details class="reveal">
           <summary>Is SBOM-Shield really free?</summary>
           <p>Yes. Pull it from Docker Hub and run it on your own infrastructure — no accounts, no per-seat pricing, no cloud lock-in.</p>
         </details>
-        <details>
+        <details class="reveal">
           <summary>What SBOM formats are supported?</summary>
           <p>CycloneDX 1.4–1.6 (XML/JSON) and SPDX 2.3 (JSON) for upload. Image and repository scans generate CycloneDX SBOMs automatically via Syft.</p>
         </details>
-        <details>
+        <details class="reveal">
           <summary>Where does my data go?</summary>
           <p>Nowhere. SBOM-Shield is fully self-hosted — every scan, SBOM, and finding stays in your own PostgreSQL database.</p>
         </details>
-        <details>
+        <details class="reveal">
           <summary>Does the AI Compliance feature call an external LLM?</summary>
           <p>No. Classification and findings are entirely deterministic — pattern matching and rules against your SBOM data, with no network calls to any AI provider.</p>
         </details>
-        <details>
+        <details class="reveal">
           <summary>Can I run this on Kubernetes or OpenShift?</summary>
           <p>Yes — a production Helm chart ships in the repository, with non-root images that satisfy OpenShift's restricted-v2 SCC out of the box.</p>
         </details>
-        <details>
+        <details class="reveal">
           <summary>What do I need to run it?</summary>
           <p>Docker or Podman (or any OCI-compatible runtime). One <code>docker compose up -d</code> command and you're up — see Quick Start above.</p>
         </details>
@@ -243,9 +387,9 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
 
     <!-- CTA -->
     <section class="section container cta">
-      <h2>Ready to shield your supply chain?</h2>
-      <p class="lead">Pull the images and get your first scan running in minutes.</p>
-      <a class="btn btn-primary" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">Get SBOM-Shield on Docker Hub</a>
+      <h2 class="reveal">Ready to shield your supply chain?</h2>
+      <p class="lead reveal">Pull the images and get your first scan running in minutes.</p>
+      <a class="btn btn-primary reveal" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">Get SBOM-Shield on Docker Hub</a>
     </section>
 
   </main>
@@ -261,6 +405,116 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
     </div>
     <div class="container footer-credit">Built by Marius Cornaciu &amp; Anca Beres</div>
   </footer>
+
+  <script>
+  (function () {
+    // ── Hero demo: typewriter → live findings dashboard, looping ──────────────
+    var demo = document.getElementById('heroDemo');
+    if (demo) {
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var codeEl = demo.querySelector('.demo-terminal code');
+      var terminalStage = demo.querySelector('.demo-terminal');
+      var dashboard = demo.querySelector('.demo-dashboard');
+      var statusEl = demo.querySelector('.demo-dash-status');
+      var segEls = Array.prototype.slice.call(demo.querySelectorAll('.sev-seg'));
+      var chipEls = Array.prototype.slice.call(demo.querySelectorAll('.demo-chip'));
+      var SEV = [8, 22, 35, 35]; // critical, high, medium, low — percentages
+
+      var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+
+      var showEndState = function () {
+        terminalStage.style.display = 'none';
+        dashboard.classList.add('is-visible');
+        statusEl.textContent = 'scan complete';
+        statusEl.classList.add('is-done');
+        segEls.forEach(function (el, i) { el.style.setProperty('--w', SEV[i] + '%'); });
+        chipEls.forEach(function (el) { el.classList.add('is-visible'); });
+      };
+
+      if (reduceMotion) {
+        showEndState();
+      } else {
+        var typeText = function (str, speed) {
+          var i = 0;
+          return new Promise(function (resolve) {
+            (function step() {
+              codeEl.textContent += str[i];
+              i++;
+              if (i < str.length) { setTimeout(step, speed); } else { resolve(); }
+            })();
+          });
+        };
+
+        var runOnce = async function () {
+          codeEl.textContent = '';
+          terminalStage.style.display = '';
+          dashboard.classList.remove('is-visible');
+          statusEl.classList.remove('is-done');
+          segEls.forEach(function (el) { el.style.setProperty('--w', '0%'); });
+          chipEls.forEach(function (el) { el.classList.remove('is-visible'); });
+          statusEl.textContent = 'scanning…';
+
+          await typeText('$ curl -O docker-compose.yml\n', 24);
+          await sleep(150);
+          await typeText('$ docker compose up -d\n', 24);
+          await sleep(250);
+          await typeText('✓ postgres   ready\n', 9);
+          await typeText('✓ redis      ready\n', 9);
+          await typeText('✓ api        started  →  http://localhost:9000\n', 9);
+          await sleep(350);
+          await typeText('$ scan nginx:latest\n', 24);
+          await sleep(300);
+
+          terminalStage.style.display = 'none';
+          dashboard.classList.add('is-visible');
+          await sleep(150);
+          segEls.forEach(function (el, i) { el.style.setProperty('--w', SEV[i] + '%'); });
+          await sleep(750);
+          statusEl.textContent = 'scan complete';
+          statusEl.classList.add('is-done');
+          chipEls.forEach(function (el, i) { setTimeout(function () { el.classList.add('is-visible'); }, i * 130); });
+
+          await sleep(4500);
+        };
+
+        var loop = async function () {
+          while (true) {
+            await runOnce();
+            if (document.hidden) {
+              await new Promise(function (resolve) {
+                var onVis = function () {
+                  if (!document.hidden) {
+                    document.removeEventListener('visibilitychange', onVis);
+                    resolve();
+                  }
+                };
+                document.addEventListener('visibilitychange', onVis);
+              });
+            }
+          }
+        };
+        loop();
+      }
+    }
+
+    // ── Scroll reveal ───────────────────────────────────────────────────────
+    var revealEls = document.querySelectorAll('.reveal');
+    var reduceMotionReveal = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotionReveal || !('IntersectionObserver' in window)) {
+      revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(function (el) { obs.observe(el); });
+    }
+  })();
+  </script>
 
 </body>
 </html>
