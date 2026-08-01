@@ -270,6 +270,12 @@ p code, li code {
   gap: 0.5rem;
 }
 
+.footer-credit {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
 /* Mobile */
 @media (max-width: 640px) {
   .nav-links { gap: 0.8rem; font-size: 0.85rem; }

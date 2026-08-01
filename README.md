@@ -42,10 +42,14 @@ Push to `main` and GitHub Pages (**Settings → Pages → Source: Deploy from a 
 git push origin main
 ```
 
+## Authors
+
+Built by Marius Cornaciu and Anca Beres.
+
 ## License
 
 SBOM-Shield Website
-Copyright (C) 2026 marius-cornaciu
+Copyright (C) 2026 Marius Cornaciu, Anca Beres
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
