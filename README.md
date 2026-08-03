@@ -23,6 +23,15 @@ curl -O https://raw.githubusercontent.com/marius-cornaciu/sbom-shield-website/ma
 Re-copy both files here whenever they change in sca-scanner — there's no
 automation keeping them in sync yet.
 
+## Issues
+
+Bug reports and feature requests for SBOM-Shield (the tool, not just this
+site) are tracked here too — same reason as the compose file mirroring:
+sca-scanner is private, so this is the only public repo that can host them.
+Templates live in `.github/ISSUE_TEMPLATE/`. The site links to
+[New Issue](https://github.com/marius-cornaciu/sbom-shield-website/issues/new/choose)
+from its own "Found a Bug?" section.
+
 ## Preview locally
 
 ```bash

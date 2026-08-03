@@ -1,0 +1,61 @@
+name: Bug report
+description: Report a problem with SBOM-Shield (the self-hosted scanner)
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. SBOM-Shield's source is
+        private, so issues for the tool itself are tracked here on the
+        website repo instead.
+  - type: input
+    id: version
+    attributes:
+      label: SBOM-Shield version
+      description: Image tag you're running — check the footer of the app, or `docker inspect` the image
+      placeholder: v1.4.0, latest, ...
+    validations:
+      required: true
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Deployment method
+      options:
+        - Docker Compose
+        - Podman Compose
+        - Kubernetes / Helm
+        - OpenShift
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What actually happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: e.g. `podman logs sca_api` or `docker compose logs api` — redact anything sensitive first
+      render: shell
+    validations:
+      required: false
