@@ -1,6 +1,17 @@
 version: "3.9"
 
 x-backend-env: &backend-env
+  # Defaults to production (fail-closed on weak secrets). Set APP_ENV=development
+  # in .env to relax that — e.g. when reusing a pre-existing local DB/volume
+  # that was itself initialized with a non-default password you're not rotating.
+  APP_ENV: ${APP_ENV:-production}
+  # Session cookie Secure flag. True is correct for any real deployment, which
+  # terminates TLS at an ingress or route. Set COOKIE_SECURE=false only when
+  # serving over plain http:// — notably the Playwright e2e target: Chromium and
+  # Firefox grant localhost an exception and accept Secure cookies over HTTP,
+  # but WebKit does not, so the session cookie is silently dropped there and
+  # every browser test lands on the login page.
+  COOKIE_SECURE: ${COOKIE_SECURE:-true}
   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}
   DATABASE_URL: postgresql+asyncpg://sca:${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}@db:5432/sca_scanner
   SYNC_DATABASE_URL: postgresql://sca:${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}@db:5432/sca_scanner
@@ -140,6 +151,37 @@ services:
       sca_network:
         aliases:
           - ollama
+
+  # Pulls the model on first boot. Without this the stack comes up with an
+  # empty ollama_data volume and no model, so every AI request fails with
+  # "Model 'llama3.2' not loaded yet" — the AI Compliance chat and advisor are
+  # dead on arrival on a clean install, and nothing in the UI explains why.
+  # Runs to completion and exits; restart:no keeps it from re-pulling on every
+  # `up`. `ollama pull` is idempotent, so re-running it is harmless.
+  ollama-init:
+    image: ollama/ollama:latest
+    container_name: sca_ollama_init
+    restart: "no"
+    depends_on:
+      - ollama
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        for i in $$(seq 1 60); do
+          if ollama list >/dev/null 2>&1; then break; fi
+          echo "[ollama-init] waiting for ollama ($$i/60)"; sleep 2
+        done
+        if ollama list 2>/dev/null | grep -q "^$${OLLAMA_MODEL}"; then
+          echo "[ollama-init] $${OLLAMA_MODEL} already present"
+        else
+          echo "[ollama-init] pulling $${OLLAMA_MODEL} (~2 GB, first boot only)"
+          ollama pull "$${OLLAMA_MODEL}"
+        fi
+    networks:
+      - sca_network
 
   # ── React frontend served by Nginx ─────────────────────────────
   frontend:
