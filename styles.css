@@ -523,3 +523,17 @@ p code, li code {
   .demo-dash-head { flex-direction: column; gap: 0.2rem; }
   .demo-stats { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── Backend API reference ──────────────────────────────────────────── */
+.api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 18px; }
+.api-card h3 { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.api-count { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.api-row { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) auto; gap: 10px; align-items: baseline;
+           padding: 7px 0; border-top: 1px solid var(--border); }
+.api-row:first-of-type { border-top: 0; }
+.api-ep { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.api-ep b { color: #a78bfa; font-weight: 700; margin-right: 4px; }
+.api-desc { font-size: 13px; color: var(--text-muted); }
+.api-pill { font-size: 10.5px; }
+.api-note { font-size: 13px; color: var(--text-muted); margin-top: 14px; }
+@media (max-width: 640px) { .api-grid { grid-template-columns: 1fr; } .api-row { grid-template-columns: 1fr; gap: 2px; } .api-ep { white-space: normal; } }

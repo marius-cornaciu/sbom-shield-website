@@ -21,6 +21,7 @@
         <a href="#ai-compliance">AI Compliance</a>
         <a href="#quickstart">Quick Start</a>
         <a href="#how-it-works">How It Works</a>
+        <a href="#api">API</a>
         <a href="#faq">FAQ</a>
         <a href="#issues">Issues</a>
         <a class="btn btn-ghost" href="https://hub.docker.com/u/mcmwhfysec" target="_blank" rel="noopener">Docker Hub</a>
@@ -97,7 +98,7 @@
                 <span class="demo-chip">📈 EPSS scored</span>
                 <span class="demo-chip demo-chip-accent">⚖️ AI Act tier: Limited</span>
                 <span class="demo-chip">🔒 0 secrets leaked</span>
-                <span class="demo-chip">🔗 SLSA 0–3 trust</span>
+                <span class="demo-chip">🔗 Trust 0–3 · signed &amp; attested</span>
                 <span class="demo-chip">🐳 Image scan</span>
                 <span class="demo-chip">📂 Repo scan</span>
               </div>
@@ -211,6 +212,7 @@
           <p>Boots PostgreSQL, Redis, the API, two Celery workers, and the frontend — pulling the images below automatically.</p>
           <pre><code>docker.io/mcmwhfysec/sbom-shield-backend:latest
 docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
+          <p>Current release <strong>1.6.5</strong> — multi-arch (amd64 + arm64), Cosign-signed and SBOM-attested. Pin <code>:1.6.5</code> for reproducible deploys; <code>:latest</code> moves with each release.</p>
         </li>
         <li class="reveal">
           <h3>3. Log in</h3>
@@ -283,7 +285,7 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
               <text x="110" y="309" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">3</text>
               <text x="138" y="292" font-size="13" font-weight="700" fill="#f43f5e">Secrets &amp; Security Checks (Gitleaks · Cosign · code checks)</text>
               <text x="138" y="310" font-size="10" fill="#94a3b8">Image &amp; Repository scans only (uploads have no filesystem) · repos: full git history · images: COPY/ADD layers</text>
-              <text x="138" y="325" font-size="10" fill="#94a3b8">Supply-chain trust: signature, digest pinning, SBOM attestation → SLSA 0–3 · all secrets rated CRITICAL</text>
+              <text x="138" y="325" font-size="10" fill="#94a3b8">Supply-chain trust: signature, digest pinning, SBOM attestation → trust 0–3 · all secrets rated CRITICAL</text>
             </g>
             <g>
               <line x1="480" y1="342" x2="480" y2="352" stroke="#64748b" stroke-width="1.2" />
@@ -301,7 +303,7 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
               <text x="110" y="481" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">5</text>
               <text x="138" y="464" font-size="13" font-weight="700" fill="#a78bfa">Automated Daily Re-scan (Celery Beat)</text>
               <text x="138" y="482" font-size="10" fill="#94a3b8">Every project re-scanned every 24 h against newly published advisories — no new upload needed</text>
-              <text x="138" y="497" font-size="10" fill="#94a3b8">Grype DB refreshed daily · NVD mirror synced nightly · EPSS scores refreshed · AI inventory snapshot taken</text>
+              <text x="138" y="497" font-size="10" fill="#94a3b8">Grype DB · Alpine secdb · OVAL refreshed daily · NVD mirror nightly · AI snapshot daily · EPSS on demand</text>
             </g>
             <g>
               <line x1="480" y1="514" x2="480" y2="524" stroke="#64748b" stroke-width="1.2" />
@@ -356,6 +358,143 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
     </section>
 
     <!-- FAQ -->
+    <!-- API reference -->
+    <section id="api" class="section container">
+      <h2 class="reveal">Backend API</h2>
+      <p class="lead reveal">Everything the UI does, you can do over HTTP — 83 endpoints under <code>/api</code>. Interactive OpenAPI docs are served by every instance at <code>/docs</code>. The browser uses an HttpOnly session cookie; scripts and CI use a Bearer JWT from <code>/api/auth/login</code> or an API token. Endpoints marked <em>admin</em> require an interactive admin login — API tokens can never reach user, token or global-settings management. Login and password endpoints are rate-limited per IP.</p>
+      <div class="api-grid">
+        <div class="card reveal api-card">
+          <h3>Authentication <span class="api-count">7</span></h3>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/auth/login</code><span class="api-desc">obtain JWT (username + password)</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/auth/me</code><span class="api-desc">current user info</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/auth/change-password</code><span class="api-desc">change own password</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/auth/forgot-password</code><span class="api-desc">request a password-reset link (email)</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/auth/validate-reset-token/{token}</code><span class="api-desc">verify reset token validity</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/auth/reset-password</code><span class="api-desc">set a new password via reset token</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/auth/logout</code><span class="api-desc">clear the session cookie</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Projects <span class="api-count">10</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects</code><span class="api-desc">list all projects with stats</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects</code><span class="api-desc">create project</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}</code><span class="api-desc">project detail + stats</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>PATCH</b> /api/projects/{id}</code><span class="api-desc">update project fields</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/projects/{id}</code><span class="api-desc">delete project + all data</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/history</code><span class="api-desc">scan history (last 50 scans)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/projects/{id}/history/{hid}</code><span class="api-desc">delete a single history entry</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/bom/diff</code><span class="api-desc">compare two scans (new/fixed vulns)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/components/search</code><span class="api-desc">global component search across projects</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/portfolio/timeline</code><span class="api-desc">all projects&#x27; vuln counts over time</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>SBOM Upload &amp; Scanning <span class="api-count">7</span></h3>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects/{id}/bom</code><span class="api-desc">upload SBOM, triggers async scan</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/bom/status</code><span class="api-desc">poll scan status (pending/scanning/done/error)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects/{id}/bom/rescan</code><span class="api-desc">re-analyse the latest uploaded SBOM</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/bom/dependencies</code><span class="api-desc">dependency tree from the latest SBOM</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/ecosystems</code><span class="api-desc">list ecosystems detected in the SBOM</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/components</code><span class="api-desc">paginated component list with vuln counts</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/bom/download</code><span class="api-desc">download the stored SBOM (raw CycloneDX/SPDX)</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Container Image Scanning <span class="api-count">2</span></h3>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects/image-scan</code><span class="api-desc">scan a container image, auto-creates project</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects/{id}/image-scan</code><span class="api-desc">(re)scan a container image into an existing project</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Repository Scanning <span class="api-count">2</span></h3>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects/repository-scan</code><span class="api-desc">scan a Git repository, auto-creates project</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects/{id}/repository-scan</code><span class="api-desc">scan a Git repository for secrets (Gitleaks)</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Secrets Scanning <span class="api-count">4</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/secrets</code><span class="api-desc">list secrets findings</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>PATCH</b> /api/projects/{id}/secrets/{secret_id}</code><span class="api-desc">suppress or restore a finding</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/projects/{id}/secrets/{secret_id}</code><span class="api-desc">permanently delete a finding</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/secrets</code><span class="api-desc">secrets / supply-chain findings across all projects</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Vulnerabilities <span class="api-count">10</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/vulnerabilities</code><span class="api-desc">project vulns (paginated, filterable)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/vulnerabilities/export</code><span class="api-desc">export project vulns as CSV</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/vulnerabilities/vex</code><span class="api-desc">export triage data as CycloneDX VEX</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/projects/{id}/vex/import</code><span class="api-desc">import VEX triage data</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/vulnerabilities</code><span class="api-desc">global vuln list across all projects</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/vulnerabilities/export</code><span class="api-desc">global CSV export</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/vulnerabilities/ecosystems</code><span class="api-desc">distinct ecosystems with vuln findings</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/vulnerabilities/epss</code><span class="api-desc">EPSS scores for a list of CVEs</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/vulnerabilities/{vuln_uuid}</code><span class="api-desc">full detail for a single vulnerability</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>PATCH</b> /api/vulnerabilities/{vuln_id}/analysis</code><span class="api-desc">update triage state</span><span class="pill api-pill">admin</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>AI Inventory <span class="api-count">10</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/ai-inventory</code><span class="api-desc">global AI/ML component inventory</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/ai-components</code><span class="api-desc">AI/ML components in a specific project</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/ai-packages</code><span class="api-desc">list AI package detection rules</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai-packages</code><span class="api-desc">add an AI package rule</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>PUT</b> /api/ai-packages/{id}</code><span class="api-desc">update an AI package rule</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/ai-packages/{id}</code><span class="api-desc">delete an AI package rule</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/ai-patterns</code><span class="api-desc">list AI detection patterns (regex rules)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai-patterns</code><span class="api-desc">add a detection pattern</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>PUT</b> /api/ai-patterns/{id}</code><span class="api-desc">update a detection pattern</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/ai-patterns/{id}</code><span class="api-desc">delete a detection pattern</span><span class="pill api-pill">admin</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>AI Compliance <span class="api-count">9</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/ai-findings</code><span class="api-desc">portfolio-wide AI compliance findings + posture</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/ai-findings</code><span class="api-desc">auto-generated AI compliance findings for one project</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/aibom</code><span class="api-desc">export the project&#x27;s AI Inventory as a CycloneDX 1.6 AIBOM</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/ai-diff</code><span class="api-desc">AI components added / removed / version-changed vs previous</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET/PUT</b> /api/projects/{id}/ai-act-questionnaire</code><span class="api-desc">EU AI Act questionnaire answers + manual tier override</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET/PUT</b> /api/projects/{id}/ai-cost-budget</code><span class="api-desc">monthly inference cost budget and sizing bucket</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/ai-inventory/trend</code><span class="api-desc">per-day AI adoption snapshots (default 90 days)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai-inventory/snapshot</code><span class="api-desc">force a snapshot now (normally daily)</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai-inventory/refresh</code><span class="api-desc">invalidate the global AI inventory cache</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>AI Assistant <span class="api-count">6</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/ai/status</code><span class="api-desc">is Ollama up and the model present</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai/analyze</code><span class="api-desc">analysis of a project&#x27;s top vulnerabilities</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai/recommend</code><span class="api-desc">security recommendations for a project</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai/explain</code><span class="api-desc">explanation of one CVE</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai/chat</code><span class="api-desc">freeform chat; the model calls read-only data tools</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/ai/chat/stream</code><span class="api-desc">same, streamed</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>API Tokens <span class="api-count">3</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/tokens</code><span class="api-desc">list tokens (hashes never returned)                      [user-admin]</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/tokens</code><span class="api-desc">create token (plain value shown once only)               [user-admin]</span></div>
+            <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/tokens/{id}</code><span class="api-desc">revoke token                                             [user-admin]</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Users <span class="api-count">5</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/users</code><span class="api-desc">list users</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/users</code><span class="api-desc">create user</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>PATCH</b> /api/users/{id}</code><span class="api-desc">update role / email / force_password_change</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/users/{id}</code><span class="api-desc">delete user</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/users/{id}/reset-link</code><span class="api-desc">generate a password-reset link for a user</span><span class="pill api-pill">admin</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Dashboard <span class="api-count">1</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/dashboard</code><span class="api-desc">aggregated stats (severity counts, SLA overdue, top projects)</span><span class="pill api-pill">auth</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>Settings <span class="api-count">4</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/settings</code><span class="api-desc">read SLA thresholds and webhook config</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>PATCH</b> /api/settings</code><span class="api-desc">update SLA thresholds and webhook config</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/settings/webhook/test</code><span class="api-desc">fire a test webhook delivery</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/audit-logs/export</code><span class="api-desc">download audit log as CSV</span><span class="pill api-pill">admin</span></div>
+        </div>
+        <div class="card reveal api-card">
+          <h3>NVD Mirror (Admin) <span class="api-count">3</span></h3>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/admin/nvd-mirror/status</code><span class="api-desc">sync status, last run time, CVE count</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/admin/nvd-mirror/sync/full</code><span class="api-desc">trigger a full NVD sync (~270k CVEs)</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/admin/nvd-mirror/sync/incremental</code><span class="api-desc">trigger an incremental sync (recent days)</span><span class="pill api-pill">admin</span></div>
+        </div>
+      </div>
+      <p class="reveal api-note">Reference generated from the project README and verified against the routes the running application registers.</p>
+    </section>
+
     <section id="faq" class="section section-alt">
       <div class="container">
         <h2 class="reveal">FAQ</h2>
