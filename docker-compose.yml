@@ -1,17 +1,16 @@
-version: "3.9"
-
 x-backend-env: &backend-env
   # Defaults to production (fail-closed on weak secrets). Set APP_ENV=development
   # in .env to relax that — e.g. when reusing a pre-existing local DB/volume
   # that was itself initialized with a non-default password you're not rotating.
   APP_ENV: ${APP_ENV:-production}
-  # Session cookie Secure flag. True is correct for any real deployment, which
-  # terminates TLS at an ingress or route. Set COOKIE_SECURE=false only when
-  # serving over plain http:// — notably the Playwright e2e target: Chromium and
-  # Firefox grant localhost an exception and accept Secure cookies over HTTP,
-  # but WebKit does not, so the session cookie is silently dropped there and
-  # every browser test lands on the login page.
-  COOKIE_SECURE: ${COOKIE_SECURE:-true}
+  # Session cookie Secure flag: auto | true | false.
+  # auto (default) sets Secure everywhere except a plain-http request to
+  # localhost — the zero-config quickstart. Without that exception Safari
+  # dropped the cookie over http://localhost and every first login silently
+  # bounced back to the login page (Chrome and Firefox tolerate it; WebKit
+  # does not). Set COOKIE_SECURE=true to force it (any TLS deployment), or
+  # false only for a plain-http target that is not localhost (e2e runners).
+  COOKIE_SECURE: ${COOKIE_SECURE:-auto}
   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}
   DATABASE_URL: postgresql+asyncpg://sca:${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}@db:5432/sca_scanner
   SYNC_DATABASE_URL: postgresql://sca:${POSTGRES_PASSWORD:-sbomshield_quickstart_pg_7k2x9r}@db:5432/sca_scanner
