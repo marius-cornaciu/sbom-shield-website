@@ -293,7 +293,7 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
               <circle cx="110" cy="391" r="14" fill="#eab308" opacity="0.9" />
               <text x="110" y="395" font-size="12" font-weight="800" fill="#0d1117" text-anchor="middle">4</text>
               <text x="138" y="378" font-size="13" font-weight="700" fill="#eab308">Results Stored in PostgreSQL</text>
-              <text x="138" y="396" font-size="10" fill="#94a3b8">Single BOM per project — a new scan replaces the previous one; AI history snapshots keep the diff working</text>
+              <text x="138" y="396" font-size="10" fill="#94a3b8">Single BOM per project — a new scan replaces the previous one; per-scan snapshots keep history and diffs working</text>
               <text x="138" y="411" font-size="10" fill="#94a3b8">first_seen dates and triage decisions survive re-scans — the attribution timeline never resets</text>
             </g>
             <g>
@@ -361,7 +361,7 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
     <!-- API reference -->
     <section id="api" class="section container">
       <h2 class="reveal">Backend API</h2>
-      <p class="lead reveal">Everything the UI does, you can do over HTTP — 101 endpoints under <code>/api</code>. Interactive OpenAPI docs are served by every instance at <code>/docs</code>. The browser uses an HttpOnly session cookie; scripts and CI use a Bearer JWT from <code>/api/auth/login</code> or an API token. Endpoints marked <em>admin</em> require an interactive admin login — API tokens can never reach user, token or global-settings management. Login and password endpoints are rate-limited per IP.</p>
+      <p class="lead reveal">Everything the UI does, you can do over HTTP — 102 endpoints under <code>/api</code>. Interactive OpenAPI docs are served by every instance at <code>/docs</code>. The browser uses an HttpOnly session cookie; scripts and CI use a Bearer JWT from <code>/api/auth/login</code> or an API token. Endpoints marked <em>admin</em> require an interactive admin login — API tokens can never reach user, token or global-settings management. Login and password endpoints are rate-limited per IP.</p>
       <div class="api-grid">
         <div class="card reveal api-card">
           <h3>Authentication <span class="api-count">7</span></h3>
@@ -381,8 +381,9 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
             <div class="api-row"><code class="api-ep"><b>PATCH</b> /api/projects/{id}</code><span class="api-desc">update project fields</span><span class="pill api-pill">admin</span></div>
             <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/projects/{id}</code><span class="api-desc">delete project + all data</span><span class="pill api-pill">admin</span></div>
             <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/history</code><span class="api-desc">scan history (last 50 scans)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/history/{hid}/snapshot</code><span class="api-desc">packages and findings as they were at that scan</span><span class="pill api-pill">auth</span></div>
             <div class="api-row"><code class="api-ep"><b>DELETE</b> /api/projects/{id}/history/{hid}</code><span class="api-desc">delete a single history entry</span><span class="pill api-pill">admin</span></div>
-            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/bom/diff</code><span class="api-desc">compare two scans (new/fixed vulns)</span><span class="pill api-pill">auth</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/{id}/bom/diff</code><span class="api-desc">compare two scans: counts, new/fixed/changed findings, package changes</span><span class="pill api-pill">auth</span></div>
             <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/components/search</code><span class="api-desc">global component search across projects</span><span class="pill api-pill">auth</span></div>
             <div class="api-row"><code class="api-ep"><b>GET</b> /api/projects/portfolio/timeline</code><span class="api-desc">all projects&#x27; vuln counts over time</span><span class="pill api-pill">auth</span></div>
         </div>
