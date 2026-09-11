@@ -81,6 +81,11 @@ services:
       # Change it (here or after first login) before exposing this instance.
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
       APP_URL: ${APP_URL:-http://localhost:9000}
+      # Reverse proxies whose X-Forwarded-For the API trusts. "auto" = this
+      # container's own network, i.e. the bundled frontend nginx, so the login
+      # rate limiter and audit log see the real client address. Set it to the
+      # proxy's address/CIDR if port 8000 is reachable from untrusted networks.
+      FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-auto}
       OLLAMA_URL: ${OLLAMA_URL:-http://ollama:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
     depends_on:
@@ -92,7 +97,7 @@ services:
       - "8000:8000"
     volumes:
       - api_data:/app/data
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers
     networks:
       sca_network:
         aliases:
