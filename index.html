@@ -361,7 +361,7 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
     <!-- API reference -->
     <section id="api" class="section container">
       <h2 class="reveal">Backend API</h2>
-      <p class="lead reveal">Everything the UI does, you can do over HTTP — 83 endpoints under <code>/api</code>. Interactive OpenAPI docs are served by every instance at <code>/docs</code>. The browser uses an HttpOnly session cookie; scripts and CI use a Bearer JWT from <code>/api/auth/login</code> or an API token. Endpoints marked <em>admin</em> require an interactive admin login — API tokens can never reach user, token or global-settings management. Login and password endpoints are rate-limited per IP.</p>
+      <p class="lead reveal">Everything the UI does, you can do over HTTP — 85 endpoints under <code>/api</code>. Interactive OpenAPI docs are served by every instance at <code>/docs</code>. The browser uses an HttpOnly session cookie; scripts and CI use a Bearer JWT from <code>/api/auth/login</code> or an API token. Endpoints marked <em>admin</em> require an interactive admin login — API tokens can never reach user, token or global-settings management. Login and password endpoints are rate-limited per IP.</p>
       <div class="api-grid">
         <div class="card reveal api-card">
           <h3>Authentication <span class="api-count">7</span></h3>
@@ -490,6 +490,8 @@ docker.io/mcmwhfysec/sbom-shield-frontend:latest</code></pre>
             <div class="api-row"><code class="api-ep"><b>GET</b> /api/admin/nvd-mirror/status</code><span class="api-desc">sync status, last run time, CVE count</span><span class="pill api-pill">admin</span></div>
             <div class="api-row"><code class="api-ep"><b>POST</b> /api/admin/nvd-mirror/sync/full</code><span class="api-desc">trigger a full NVD sync (~270k CVEs)</span><span class="pill api-pill">admin</span></div>
             <div class="api-row"><code class="api-ep"><b>POST</b> /api/admin/nvd-mirror/sync/incremental</code><span class="api-desc">trigger an incremental sync (recent days)</span><span class="pill api-pill">admin</span></div>
+            <div class="api-row"><code class="api-ep"><b>GET</b> /api/admin/feeds/status</code><span class="api-desc">CISA KEV + FIRST EPSS: last fetch, rows</span></div>
+            <div class="api-row"><code class="api-ep"><b>POST</b> /api/admin/feeds/refresh</code><span class="api-desc">queue the KEV + EPSS refresh now</span></div>
         </div>
       </div>
       <p class="reveal api-note">Reference generated from the project README and verified against the routes the running application registers.</p>
